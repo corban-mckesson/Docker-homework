@@ -7,9 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +24,20 @@ public class User {
 
     protected User(){}
 
-    public User(JSONObject user){
-        this.firstName = user.getString("firstName");
-        this.lastName = user.getString("lastName");
-        this.email = user.getString("email");
-        this.phone = user.getString("phone");
+    public User(String firstName, String lastName, String email, String phone){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+
+    }
+
+    public User(long id, String firstName, String lastName, String email, String phone){
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
 
     }
 

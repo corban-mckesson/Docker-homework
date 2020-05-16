@@ -14,39 +14,30 @@ public class UserService {
     @Autowired
     private UserRepo userRepo;
 
-    public String createUser(JSONObject user){
-        User newUser = new User(user);
-        userRepo.save(newUser);
-        return "user created";
+    public User createUser(User user){
+        userRepo.save(user);
+        return user;
     }
 
-    public String findUserByFirstName(String firstName){
-        List<User> foundUsers = userRepo.findByFirstName(firstName);
-        return foundUsers.toString();
-    }
-
-    public String findUserbyId(Long id){
+    public User findUserbyId(Long id){
         User foundUser = userRepo.findById(id).get();
-        return foundUser.toString();
+        return foundUser;
     }
 
-    public String findAll(){
+    public List<User> findAll(){
         List<User> foundUsers =(List<User>) userRepo.findAll();
-        return foundUsers.toString();
+        return foundUsers;
     }
 
-    public String updateUser(JSONObject user){
-        User updatedUser = new User(user);
-//        User olduser = userRepo.findById(updatedUser.getId()).get();
-//        olduser = updatedUser;
-        userRepo.save(updatedUser);
-        return userRepo.findById(updatedUser.getId()).get().toString();
+    public User updateUser(User user){
+        userRepo.save(user);
+        return userRepo.findById(user.getId()).get();
     }
 
-    public String deleteIndividualId(Long id){
+    public User deleteIndividualId(Long id){
         User todelete = userRepo.findById(id).get();
         userRepo.delete(todelete);
-        return "user deleted";
+        return todelete;
     }
 
     public String deleteAllUsers(){
