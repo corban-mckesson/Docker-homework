@@ -46,4 +46,9 @@ public class ToDoListController {
     public Set<Task> getAllCompleteTasks(@PathVariable("id")long toDoId){
         return toDoService.getAllCompleteTasks(toDoId);
     }
+
+    @PostMapping("/delete-task/")
+    public Task deleteTask(@RequestBody Task task){
+        return toDoService.deleteTask(task);
+    }
 }

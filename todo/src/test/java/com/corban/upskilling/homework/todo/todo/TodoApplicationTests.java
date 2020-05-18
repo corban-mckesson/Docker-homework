@@ -114,22 +114,22 @@ class TodoApplicationTests {
         }
     }
 
-//    @Test
-//    @Order(8)
-//    public void deleteTask(){
-//        try{
-//            mockMvc.perform(post("/delete-task/").content(mapper.writeValueAsString(
-//                    new ToDoList("testToDo",new Task("test task updated")))).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-//                    .andExpect(status().isOk()).andExpect(jsonPath("$.tasks[0].taskName").value("test task updated"));
-//        } catch (Exception e) {
-//            fail("Should not have exception: " + e.getLocalizedMessage());
-//        }
-//
-//        try{
-//            mockMvc.perform(get("/seeAllCompletedTasks/{testToDo}")).andDo(print()).andExpect(status().isOk())
-//                    .andExpect(jsonPath("$.tasks").isEmpty());
-//        } catch (Exception e) {
-//            fail("Should not have exception: " + e.getLocalizedMessage());
-//        }
-//    }
+    @Test
+    @Order(8)
+    public void deleteTask(){
+        try{
+            mockMvc.perform(post("/delete-task/").content(mapper.writeValueAsString(
+                    new Task("test task updated", 1))).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk()).andExpect(jsonPath("$.taskName").value("test task updated"));
+        } catch (Exception e) {
+            fail("Should not have exception: " + e.getLocalizedMessage());
+        }
+
+        try{
+            mockMvc.perform(get("/seeAllCompleteTasks/1")).andDo(print()).andExpect(status().isOk())
+                    .andExpect(jsonPath("$").isEmpty());
+        } catch (Exception e) {
+            fail("Should not have exception: " + e.getLocalizedMessage());
+        }
+    }
 }

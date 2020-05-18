@@ -47,7 +47,12 @@ public class ToDoList implements Serializable {
     public Set<Long> getTaskIds() {
         return taskIds;
     }
+
     public void addTaskId(long id){
         taskIds.add(id);
+    }
+
+    public void removeTaskId(long id){
+        taskIds.remove(id);
     }
 }

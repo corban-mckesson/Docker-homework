@@ -35,6 +35,15 @@ public class ToDoService {
         return taskRepo.findById(task.getId()).get();
     }
 
+    public Task deleteTask(Task taskToDelete){
+        taskToDelete = taskRepo.findByTaskName(taskToDelete.getTaskName());
+        taskRepo.delete(taskToDelete);
+        ToDoList listToUpdate = toDoRepo.findById(taskToDelete.getToDoLostId()).get();
+        listToUpdate.removeTaskId(taskToDelete.getId());
+        toDoRepo.save(listToUpdate);
+        return taskToDelete;
+    }
+
     public Set<Task> getAllTasks(long toDoId){
         return taskRepo.findByToDoListId(toDoId);
     }
