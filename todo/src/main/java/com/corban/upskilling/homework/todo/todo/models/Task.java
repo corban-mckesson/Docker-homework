@@ -2,6 +2,9 @@ package com.corban.upskilling.homework.todo.todo.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
 public class Task implements Serializable {
@@ -16,12 +19,16 @@ public class Task implements Serializable {
     private String taskDescription;
     private boolean completed = false;
     private long toDoListId;
+    private Timestamp createdTime;
+    private Timestamp completedTime;
 
     protected Task(){}
 
     public Task(String taskName, long toDoListId){
         this.taskName = taskName;
         this.toDoListId = toDoListId;
+        Date date = new Date();
+        this.createdTime = new Timestamp(date.getTime());
     }
 
     public long getId() {
@@ -53,6 +60,8 @@ public class Task implements Serializable {
     }
 
     public void setCompleted(boolean completed) {
+        Date date = new Date();
+        this.completedTime = new Timestamp(date.getTime());
         this.completed = completed;
     }
 
@@ -62,5 +71,13 @@ public class Task implements Serializable {
 
     public void setToDoLostId(long toDoListId) {
         this.toDoListId = toDoListId;
+    }
+
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
+    public Timestamp getCompletedTime() {
+        return completedTime;
     }
 }
