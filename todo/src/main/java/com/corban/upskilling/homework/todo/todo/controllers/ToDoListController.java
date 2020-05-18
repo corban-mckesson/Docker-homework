@@ -36,4 +36,9 @@ public class ToDoListController {
     public Set<Task> getAllTasks(@PathVariable("id")long toDoId){
         return toDoService.getAllTasks(toDoId);
     }
+
+    @GetMapping("/seeAllIncompleteTasks/{id}")
+    public Set<Task> getAllIncompleteTasks(@PathVariable("id")long toDoId){
+        return toDoService.getAllIncompleteTasks(toDoId);
+    }
 }

@@ -5,6 +5,7 @@ import com.corban.upskilling.homework.todo.todo.models.ToDoList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -36,5 +37,16 @@ public class ToDoService {
 
     public Set<Task> getAllTasks(long toDoId){
         return taskRepo.findByToDoListId(toDoId);
+    }
+
+    public Set<Task> getAllIncompleteTasks(long toDoId){
+        Set<Task> allTasks = getAllTasks(toDoId);
+        Set<Task> incompleteTasks = new HashSet<>();
+        for(Task task: allTasks){
+            if(!task.isCompleted()){
+                incompleteTasks.add(task);
+            }
+        }
+        return incompleteTasks;
     }
 }
