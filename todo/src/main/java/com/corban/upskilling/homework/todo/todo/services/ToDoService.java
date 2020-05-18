@@ -49,4 +49,15 @@ public class ToDoService {
         }
         return incompleteTasks;
     }
+
+    public Set<Task> getAllCompleteTasks(long toDoId){
+        Set<Task> allTasks = getAllTasks(toDoId);
+        Set<Task> completeTasks = new HashSet<>();
+        for(Task task: allTasks){
+            if(task.isCompleted()){
+                completeTasks.add(task);
+            }
+        }
+        return completeTasks;
+    }
 }

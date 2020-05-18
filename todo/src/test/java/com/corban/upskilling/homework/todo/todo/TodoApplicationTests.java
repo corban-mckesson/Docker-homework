@@ -102,19 +102,18 @@ class TodoApplicationTests {
             fail("Should not have exception: " + e.getLocalizedMessage());
         }
     }
-//
-//    @Test
-//    @Order(7)
-//    public void viewAllTasks(){
-//        try{
-//            mockMvc.perform(get("/seeAllTasks/{testToDo}")).andDo(print()).andExpect(status().isOk())
-//                    .andExpect(jsonPath("$.tasks[0].taskName").value("test task updated"))
-//                    .andExpect(jsonPath("$.tasks[1].taskName").value("test task incomplete"));
-//        } catch (Exception e) {
-//            fail("Should not have exception: " + e.getLocalizedMessage());
-//        }
-//    }
-//
+
+    @Test
+    @Order(7)
+    public void viewCompletedTasks(){
+        try{
+            mockMvc.perform(get("/seeAllCompleteTasks/1")).andDo(print()).andExpect(status().isOk())
+                    .andExpect(jsonPath("$.[0].taskName").value("test task updated"));
+        } catch (Exception e) {
+            fail("Should not have exception: " + e.getLocalizedMessage());
+        }
+    }
+
 //    @Test
 //    @Order(8)
 //    public void deleteTask(){
