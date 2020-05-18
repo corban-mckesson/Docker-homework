@@ -2,8 +2,7 @@ package com.corban.upskilling.homework.todo.todo.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 public class ToDoList implements Serializable {
@@ -12,10 +11,11 @@ public class ToDoList implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long toDoListId;
+    private long id;
+    @Column(unique = true)
     private String listName;
-    @OneToMany(mappedBy = "taskId")
-    private List<Task> tasks = new ArrayList<Task>();
+    @ElementCollection(targetClass = Long.class)
+    private Set<Long> taskIds;
 
     protected ToDoList(){}
 
@@ -23,16 +23,17 @@ public class ToDoList implements Serializable {
         this.listName = listName;
     }
 
-    public ToDoList(String listName, Task taskToAdd){
-
+    public ToDoList(String listName, long id){
+        this.listName = listName;
+        this.id = id;
     }
 
     public long getId() {
-        return toDoListId;
+        return id;
     }
 
-    public void setId(long toDoListId) {
-        this.toDoListId = toDoListId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getListName() {
@@ -43,11 +44,10 @@ public class ToDoList implements Serializable {
         this.listName = listName;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
+    public Set<Long> getTaskIds() {
+        return taskIds;
     }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+    public void addTaskId(long id){
+        taskIds.add(id);
     }
 }

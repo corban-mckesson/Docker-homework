@@ -3,10 +3,7 @@ package com.corban.upskilling.homework.todo.todo;
 import com.corban.upskilling.homework.todo.todo.models.Task;
 import com.corban.upskilling.homework.todo.todo.models.ToDoList;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,78 +44,58 @@ class TodoApplicationTests {
         }
     }
 
-//    @Test
-//    @Order(3)
-//    public void addTask(){
-//        try{
-//            mockMvc.perform(post("/add-task/").content(mapper.writeValueAsString(
-//                    new ToDoList("testToDo",new Task("test task")))).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-//                    .andExpect(status().isOk()).andExpect(jsonPath("$.tasks[0].taskName").value("test task"));
-//        } catch (Exception e) {
-//            fail("Should not have exception: " + e.getLocalizedMessage());
-//        }
-//    }
-//
-//    @Test
-//    @Order(4)
-//    public void updateTask(){
-//        try{
-//            mockMvc.perform(post("/update-task/").content(mapper.writeValueAsString(
-//                    new ToDoList("testToDo",new Task("test task updated")))).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-//                    .andExpect(status().isOk()).andExpect(jsonPath("$.tasks[0].taskName").value("test task updated"));
-//        } catch (Exception e) {
-//            fail("Should not have exception: " + e.getLocalizedMessage());
-//        }
-//    }
-//
-//    @Test
-//    @Order(5)
-//    public void addTaskDescription(){
-//        try{
-//            mockMvc.perform(post("/update-task-description/").content(mapper.writeValueAsString(
-//                    new ToDoList("testToDo",new Task("test task updated","execute order 66")))).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-//                    .andExpect(status().isOk()).andExpect(jsonPath("$.tasks[0].taskDescription").value("execute order 66"));
-//        } catch (Exception e) {
-//            fail("Should not have exception: " + e.getLocalizedMessage());
-//        }
-//    }
-//
+    @Test
+    @Order(3)
+    public void addTask(){
+        try{
+            mockMvc.perform(post("/add-task/").content(mapper.writeValueAsString(
+                    new Task("test task", 1))).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk()).andExpect(jsonPath("$.taskIds").isNotEmpty())
+                    .andDo(print());
+        } catch (Exception e) {
+            fail("Should not have exception: " + e.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    @Order(4)
+    public void updateTask(){
+        Task myTask = new Task("test task updated", 1);
+        myTask.setTaskDescription("execute order 66");
+        myTask.setCompleted(true);
+        myTask.setId(1);
+        try{
+            mockMvc.perform(post("/update-task/").content(mapper.writeValueAsString(
+                    myTask)).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andDo(print())
+                    .andExpect(status().isOk()).andExpect(jsonPath("$.taskName").value("test task updated"))
+                    .andExpect(status().isOk()).andExpect(jsonPath("$.taskDescription").value("execute order 66"))
+                    .andExpect(status().isOk()).andExpect(jsonPath("$.completed").value(true));
+        } catch (Exception e) {
+            fail("Should not have exception: " + e.getLocalizedMessage());
+        }
+    }
+    @Test
+    @Order(5)
+    public void seeAllTasks(){
+        try{
+            mockMvc.perform(get("/seeAllTasks/1")).andDo(print()).andExpect(status().isOk())
+                    .andExpect(jsonPath("$.[0].taskName").value("test task updated"));
+        } catch (Exception e) {
+            fail("Should not have exception: " + e.getLocalizedMessage());
+        }
+    }
+
 //    @Test
 //    @Order(6)
-//    public void seeAllTasks(){
-//        try{
-//            mockMvc.perform(get("/seeAllTasks/{testToDo}")).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.listName").value("testToDo"));
-//        } catch (Exception e) {
-//            fail("Should not have exception: " + e.getLocalizedMessage());
-//        }
-//    }
-//
-//    @Test
-//    @Order(7)
-//    public void completeTask(){
-//        try{
-//            mockMvc.perform(post("/complete-task/").content(mapper.writeValueAsString(
-//                    new ToDoList("testToDo",new Task("test task updated")))).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-//                    .andExpect(status().isOk()).andExpect(jsonPath("$.tasks[0].taskStatus").value("COMPLETED"));
-//        } catch (Exception e) {
-//            fail("Should not have exception: " + e.getLocalizedMessage());
-//        }
-//    }
-//
-//    @Test
-//    @Order(8)
-//    public void viewCompletedTasks(){
-//        try{
-//            mockMvc.perform(get("/seeAllCompletedTasks/{testToDo}")).andDo(print()).andExpect(status().isOk())
-//                    .andExpect(jsonPath("$.tasks[0].taskName").value("test task updated"));
-//        } catch (Exception e) {
-//            fail("Should not have exception: " + e.getLocalizedMessage());
-//        }
-//    }
-//
-//    @Test
-//    @Order(9)
 //    public void viewIncompleteTasks(){
+//        try{
+//            mockMvc.perform(post("/add-task/").content(mapper.writeValueAsString(
+//                    new Task("test task", 1))).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+//                    .andExpect(status().isOk()).andExpect(jsonPath("$.taskIds").isNotEmpty())
+//                    .andDo(print());
+//        } catch (Exception e) {
+//            fail("Should not have exception: " + e.getLocalizedMessage());
+//        }
 //        try{
 //            mockMvc.perform(get("/seeAllIncompleteTasks/{testToDo}")).andDo(print()).andExpect(status().isOk())
 //                    .andExpect(jsonPath("$.tasks[0].taskName").value("test task incomplete"));
@@ -128,7 +105,7 @@ class TodoApplicationTests {
 //    }
 //
 //    @Test
-//    @Order(10)
+//    @Order(7)
 //    public void viewAllTasks(){
 //        try{
 //            mockMvc.perform(get("/seeAllTasks/{testToDo}")).andDo(print()).andExpect(status().isOk())
@@ -140,7 +117,7 @@ class TodoApplicationTests {
 //    }
 //
 //    @Test
-//    @Order(11)
+//    @Order(8)
 //    public void deleteTask(){
 //        try{
 //            mockMvc.perform(post("/delete-task/").content(mapper.writeValueAsString(

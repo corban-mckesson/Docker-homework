@@ -1,9 +1,6 @@
 package com.corban.upskilling.homework.todo.todo.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -13,17 +10,26 @@ public class Task implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long taskId;
+    private long id;
+    @Column(unique = true)
     private String taskName;
     private String taskDescription;
-    private boolean completed;
+    private boolean completed = false;
+    private long toDoListId;
 
-    public long getId() {
-        return taskId;
+    protected Task(){}
+
+    public Task(String taskName, long toDoListId){
+        this.taskName = taskName;
+        this.toDoListId = toDoListId;
     }
 
-    public void setId(long taskId) {
-        this.taskId = taskId;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTaskName() {
@@ -48,5 +54,13 @@ public class Task implements Serializable {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public long getToDoLostId() {
+        return toDoListId;
+    }
+
+    public void setToDoLostId(long toDoListId) {
+        this.toDoListId = toDoListId;
     }
 }
