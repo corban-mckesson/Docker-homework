@@ -17,37 +17,37 @@ public class ToDoListController {
     @RequestMapping("/")
     public String index(){ return "Time for some ToDo Lists!"; }
 
-    @PutMapping("/create-ToDoList/")
+    @PutMapping("/ToDoList/")
     public ToDoList createUser(@RequestBody ToDoList toDoList){
         return toDoService.createToDoList(toDoList);
     }
 
-    @PostMapping("/add-task/")
+    @PutMapping("/task/")
     public ToDoList addTask(@RequestBody Task task){
         return toDoService.addTask(task);
     }
 
-    @PostMapping("/update-task/")
+    @PostMapping("/task/")
     public Task updateTask(@RequestBody Task task){
         return toDoService.updateTask(task);
     }
 
-    @GetMapping("/seeAllTasks/{id}")
+    @GetMapping("/task/all/{id}")
     public Set<Task> getAllTasks(@PathVariable("id")long toDoId){
         return toDoService.getAllTasks(toDoId);
     }
 
-    @GetMapping("/seeAllIncompleteTasks/{id}")
+    @GetMapping("/task/incomplete/{id}")
     public Set<Task> getAllIncompleteTasks(@PathVariable("id")long toDoId){
         return toDoService.getAllIncompleteTasks(toDoId);
     }
 
-    @GetMapping("/seeAllCompleteTasks/{id}")
+    @GetMapping("/task/complete/{id}")
     public Set<Task> getAllCompleteTasks(@PathVariable("id")long toDoId){
         return toDoService.getAllCompleteTasks(toDoId);
     }
 
-    @PostMapping("/delete-task/")
+    @PostMapping("/task/delete/")
     public Task deleteTask(@RequestBody Task task){
         return toDoService.deleteTask(task);
     }

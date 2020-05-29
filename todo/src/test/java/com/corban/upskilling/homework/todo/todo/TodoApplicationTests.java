@@ -35,7 +35,7 @@ class TodoApplicationTests {
     @Order(2)
     public void createToDoList(){
         try{
-            mockMvc.perform(put("/create-ToDoList/").content(mapper.writeValueAsString(
+            mockMvc.perform(put("/ToDoList/").content(mapper.writeValueAsString(
                     new ToDoList("testToDo"))).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk()).andExpect(jsonPath("$.listName").value("testToDo"))
                     .andDo(print());
@@ -48,7 +48,7 @@ class TodoApplicationTests {
     @Order(3)
     public void addTask(){
         try{
-            mockMvc.perform(post("/add-task/").content(mapper.writeValueAsString(
+            mockMvc.perform(put("/task/").content(mapper.writeValueAsString(
                     new Task("test task", 1))).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk()).andExpect(jsonPath("$.taskIds").isNotEmpty())
                     .andDo(print());
@@ -65,7 +65,7 @@ class TodoApplicationTests {
         myTask.setCompleted(true);
         myTask.setId(1);
         try{
-            mockMvc.perform(post("/update-task/").content(mapper.writeValueAsString(
+            mockMvc.perform(post("/task/").content(mapper.writeValueAsString(
                     myTask)).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andDo(print())
                     .andExpect(status().isOk()).andExpect(jsonPath("$.taskName").value("test task updated"))
                     .andExpect(status().isOk()).andExpect(jsonPath("$.taskDescription").value("execute order 66"))
@@ -76,9 +76,9 @@ class TodoApplicationTests {
     }
     @Test
     @Order(5)
-    public void seeAllTasks(){
+    public void seeAllTasksInAList(){
         try{
-            mockMvc.perform(get("/seeAllTasks/1")).andDo(print()).andExpect(status().isOk())
+            mockMvc.perform(get("/task/all/1")).andDo(print()).andExpect(status().isOk())
                     .andExpect(jsonPath("$.[0].taskName").value("test task updated"));
         } catch (Exception e) {
             fail("Should not have exception: " + e.getLocalizedMessage());
@@ -87,16 +87,16 @@ class TodoApplicationTests {
 
     @Test
     @Order(6)
-    public void viewIncompleteTasks(){
+    public void viewIncompleteTasksInAList(){
         try{
-            mockMvc.perform(post("/add-task/").content(mapper.writeValueAsString(
+            mockMvc.perform(put("/task/").content(mapper.writeValueAsString(
                     new Task("test task incomplete", 1))).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk()).andExpect(jsonPath("$.taskIds").isNotEmpty());
         } catch (Exception e) {
             fail("Should not have exception: " + e.getLocalizedMessage());
         }
         try{
-            mockMvc.perform(get("/seeAllIncompleteTasks/1")).andDo(print()).andExpect(status().isOk())
+            mockMvc.perform(get("/task/incomplete/1")).andDo(print()).andExpect(status().isOk())
                     .andExpect(jsonPath("$.[0].taskName").value("test task incomplete"));
         } catch (Exception e) {
             fail("Should not have exception: " + e.getLocalizedMessage());
@@ -107,7 +107,7 @@ class TodoApplicationTests {
     @Order(7)
     public void viewCompletedTasks(){
         try{
-            mockMvc.perform(get("/seeAllCompleteTasks/1")).andDo(print()).andExpect(status().isOk())
+            mockMvc.perform(get("/task/complete/1")).andDo(print()).andExpect(status().isOk())
                     .andExpect(jsonPath("$.[0].taskName").value("test task updated"));
         } catch (Exception e) {
             fail("Should not have exception: " + e.getLocalizedMessage());
@@ -118,7 +118,7 @@ class TodoApplicationTests {
     @Order(8)
     public void deleteTask(){
         try{
-            mockMvc.perform(post("/delete-task/").content(mapper.writeValueAsString(
+            mockMvc.perform(post("/task/delete/").content(mapper.writeValueAsString(
                     new Task("test task updated", 1))).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk()).andExpect(jsonPath("$.taskName").value("test task updated"));
         } catch (Exception e) {
@@ -126,7 +126,7 @@ class TodoApplicationTests {
         }
 
         try{
-            mockMvc.perform(get("/seeAllCompleteTasks/1")).andDo(print()).andExpect(status().isOk())
+            mockMvc.perform(get("/task/complete/1")).andDo(print()).andExpect(status().isOk())
                     .andExpect(jsonPath("$").isEmpty());
         } catch (Exception e) {
             fail("Should not have exception: " + e.getLocalizedMessage());
